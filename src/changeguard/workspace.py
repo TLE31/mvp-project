@@ -68,8 +68,8 @@ def resolve_repo(
 
     if env_value is None:
         env_value = os.environ.get("CHANGEGUARD_REPO")
-    if env_value and "${workspaceFolder}" not in env_value:
-        return _resolve_candidate(Path(env_value), "env", explicit=False)
+    if env_value and env_value.strip() and "${workspaceFolder}" not in env_value:
+        return _resolve_candidate(Path(env_value.strip()), "env", explicit=False)
 
     for root in roots or ():
         candidate = _file_uri_path(root)

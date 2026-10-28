@@ -41,7 +41,10 @@ def test_env_repo_has_priority_over_client_roots_and_cwd(tmp_path):
     ) == (env_repo.resolve(), "env")
 
 
-@pytest.mark.parametrize("env_value", ["", "${workspaceFolder}", "${workspaceFolder}\\"])
+@pytest.mark.parametrize(
+    "env_value",
+    ["", "   ", "${workspaceFolder}", "${workspaceFolder}\\"],
+)
 def test_empty_or_unresolved_env_value_is_ignored(tmp_path, monkeypatch, env_value):
     repo = _git_repo(tmp_path / "working")
     monkeypatch.setenv("CHANGEGUARD_REPO", env_value)

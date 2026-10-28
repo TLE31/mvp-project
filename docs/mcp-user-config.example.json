@@ -1,0 +1,10 @@
+{
+  "servers": {
+    "changeguard": {
+      "type": "stdio",
+      "command": "<ABSOLUTE_PATH_TO>\\.venv\\Scripts\\python.exe",
+      "args": ["-m", "changeguard.mcp_server"],
+      "env": { "CHANGEGUARD_REPO": "${workspaceFolder}" }
+    }
+  }
+}

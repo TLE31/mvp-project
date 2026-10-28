@@ -1,9 +1,0 @@
-{
-  "servers": {
-    "changeguard": {
-      "type": "stdio",
-      "command": "python",
-      "args": ["-m", "changeguard.mcp_server"]
-    }
-  }
-}

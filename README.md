@@ -37,12 +37,17 @@ changeguard explain --base main
 
 ## GitHub Copilot Agent mode (MCP)
 
-The workspace includes `.vscode/mcp.json` with the stdio server registration. Install ChangeGuard into the Python environment used by VS Code, open the repository in VS Code, and enable the ChangeGuard server when prompted. The server exposes:
+The local `.vscode/mcp.json` registration is ignored by Git and intended only for development in this repository. For a server registered once at VS Code user level and reused from any workspace, copy [docs/mcp-user-config.example.json](docs/mcp-user-config.example.json) into your user MCP configuration and replace `<ABSOLUTE_PATH_TO>` with the directory containing the ChangeGuard virtual environment. Install ChangeGuard into that environment first.
+
+The server selects a workspace from the `repo_path` tool argument, `CHANGEGUARD_REPO`, the client-provided MCP roots, or the server process's current working directory, in that order. The selected directory must be a Git repository containing `pom.xml`; an unresolved `${workspaceFolder}` environment value is ignored. If no workspace is discovered, pass `repo_path` explicitly. Outputs are created in the selected Java repository. Call `whoami` to inspect the detected workspace and runtime details.
+
+The server exposes:
 
 - `analyze_change` — impact JSON and a Markdown summary
 - `run_impacted_tests` — selected Maven tests and predicted-versus-actual results
 - `generate_report` — creates and opens the HTML graph
 - `explain_impact` — rule-based explanation, or Ollama when available locally
+- `whoami` — reports workspace resolution and runtime details
 
 Example Copilot prompts:
 

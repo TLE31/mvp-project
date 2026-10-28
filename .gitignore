@@ -5,4 +5,3 @@ __pycache__/
 target/
 changeguard-report.html
 .changeguard-last-run.json
-.vscode/mcp.json

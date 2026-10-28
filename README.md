@@ -9,7 +9,8 @@ ChangeGuard is a local change-impact analyzer for Java/Spring Boot Maven service
 - Java and Maven for running project tests
 
 ```powershell
-python -m pip install -e .
+python -m venv .venv
+.\.venv\Scripts\python.exe -m pip install -e .
 ```
 
 For running ChangeGuard's own tests, install the development extra:
@@ -37,7 +38,9 @@ changeguard explain --base main
 
 ## GitHub Copilot Agent mode (MCP)
 
-The local `.vscode/mcp.json` registration is ignored by Git and intended only for development in this repository. For Copilot Agent sessions, register ChangeGuard once in the Copilot Global MCP configuration (`%USERPROFILE%\\.copilot\\mcp-config.json`) so it is available across workspaces. The portable configuration example is [docs/copilot-global-mcp-config.example.json](docs/copilot-global-mcp-config.example.json); replace its Python executable with the absolute path to the environment where ChangeGuard is installed. This global format uses `mcpServers` and does not expand `${workspaceFolder}`; the MCP server detects the active Java repository from client roots or its working directory. For VS Code Local harness sessions, add the `servers` entry from [docs/mcp-user-config.example.json](docs/mcp-user-config.example.json) to your VS Code user-profile MCP config (`%APPDATA%\\Code\\User\\mcp.json`) or use **MCP: Open User Configuration**. Both configurations are user-scoped and make the server available across workspace windows.
+The workspace `.vscode/mcp.json` registers ChangeGuard for VS Code and Copilot sessions opened in this repository. It launches the Python environment at `.venv`; create that environment and install the project dependencies using the setup commands above before starting the server. In VS Code, check **MCP: List Servers** and start or restart `changeguard` if needed. Start a new chat after connecting it so the tools are available there.
+
+To make ChangeGuard available across workspaces, register it in the Copilot Global MCP configuration (`%USERPROFILE%\\.copilot\\mcp-config.json`). The portable configuration example is [docs/copilot-global-mcp-config.example.json](docs/copilot-global-mcp-config.example.json); replace its Python executable with the absolute path to the environment where ChangeGuard is installed. This global format uses `mcpServers` and does not expand `${workspaceFolder}`. For VS Code Local harness user-profile configuration, add the `servers` entry from [docs/mcp-user-config.example.json](docs/mcp-user-config.example.json) to `%APPDATA%\\Code\\User\\mcp.json` or use **MCP: Open User Configuration**.
 
 The server selects a workspace from the `repo_path` tool argument, `CHANGEGUARD_REPO`, the client-provided MCP roots, or the server process's current working directory, in that order. The selected directory must be a Git repository containing `pom.xml`; an unresolved `${workspaceFolder}` environment value is ignored. If no workspace is discovered, pass `repo_path` explicitly. Outputs are created in the selected Java repository. Call `whoami` to inspect the detected workspace and runtime details.
 
